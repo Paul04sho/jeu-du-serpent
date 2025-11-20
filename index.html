@@ -3,11 +3,33 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>Jeu JavaScript</title>
+
+    <!-- Bibliothèque Font Awesome pour l'icone du bouton Recommencer -->
+    <script defer src="https://pro.fontawesome.com/releases/v5.10.0/js/all.js"
+        integrity="sha384-G/ZR3ntz68JZrH4pfPJyRbjW+c0+ojii5f+GYiYwldYU69A+Ejat6yIfLSxljXxD"
+        crossorigin="anonymous"></script>
+
     <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
     
+    <div class="container noselect">
+        <div class="wrapper">
+            <button id="replay">
+                <i class="fas fa-play"></i>
+                RECOMMENCER
+            </button>
+            <div id="gameCanvas">
+                <!-- Rectangle contenant le serpent et la nourriture -->
+            </div>
+            <div id="ui">
+                <h2>SCORE</h2>
+                <span id="score">00</span>
+            </div>
+        </div>
+    </div>
+
     <script src="js/script.js"></script>
 </body>
 </html>
