@@ -80,9 +80,9 @@ let helpers = {
         if (hue == undefined) {
             return [0, 0, 0];
         }
-        var chroma = (1 - Maths.abs(2 * lightness - 1)) * saturation;
+        var chroma = (1 - Math.abs(2 * lightness - 1)) * saturation;
         var huePrime = hue / 60;
-        var secondComponent = chroma * (1 - Maths.abs((huePrime % 2) - 1));
+        var secondComponent = chroma * (1 - Math.abs((huePrime % 2) - 1));
 
         huePrime = ~~huePrime;
         var red;
