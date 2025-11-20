@@ -7,3 +7,92 @@ let CTX = dom_canvas.getContext("2d");
 
 const W = (dom_canvas.width = 400);
 const H = (dom_canvas.height = 400);
+
+let snake,
+food,
+currentHue,
+cells = 20,
+cellSize,
+isGameOver = false,
+tails = [],
+score = 0,
+maxScore = window.localStorage.getItem("maxScore") ||  undefined,
+particles = [],
+splashingParticlesCount = 20,
+cellsCount,
+requestID;
+
+let helpers = {
+    Vec: class {
+        constructor (x, y) {
+            this.x = x;
+            this.y = y;
+        }
+        add(v) {
+            this.x += v.x;
+            this.y += v.y;
+            return this;
+        }
+        mult(v) {
+            if (v instanceof helpers.Vec) {
+                this.x *= v.x;
+                this.y *= v.y;
+                return this;
+            } else {
+                this.x *= v;
+                this.y *= v;
+                return this;
+            }
+        }
+    }, 
+    isCollision (v1, v2) {
+        return v1.x == v2.x && v1.y == v2.y;
+    },
+    garbageCollector () {
+        for (let i = 0; i < particles.length; i++) {
+            if (particles[i].size <= 0) {
+                particles.splice(i, 1);
+            }
+        }
+    },
+    // Fonction pour styliser la grille du jeu 
+    drawGrid () {
+        CTX.lineWidth = 1.1;
+        CTX.strokeStyle = "#232332";
+        CTX.shadowBlur = 0;
+        for (let i = 0; i < cells; i++) {
+            let f = (W / cells) * i;
+            CTX.beginPath();
+            CTX.moveTo(f, 0);
+            CTX.lineTo(f, H);
+            CTX.stroke();
+            CTX.beginPath();
+            CTX.moveTo(0, f);
+            CTX.lineTo(W, f);
+            CTX.stroke();
+            CTX.closePath();
+        }
+    },
+    randHue () {
+        return ~~(Math.random() * 360);
+    },
+    hsl2rgb (hue, saturation, lightness) {
+        if (hue == undefined) {
+            return [0, 0, 0];
+        }
+        var chroma = (1 - Maths.abs(2 * lightness - 1)) * saturation;
+        var huePrime = hue / 60;
+        var secondComponent = chroma * (1 - Maths.abs((huePrime % 2) - 1));
+
+        huePrime = ~~huePrime;
+        var red;
+        var green;
+        var blue;
+
+        if (huePrime === 0) {
+            red = chroma;
+            green = secondComponent;
+            blue = 0;
+        }
+    }
+}
