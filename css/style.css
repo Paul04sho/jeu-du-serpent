@@ -28,6 +28,22 @@ body {
   color: #6e7888;
 }
 
+.noselect {
+  user-select: none;
+}
+
+.container {
+  display: flex;
+  width: 100%;
+  height: 100%;
+  flex-flow: column wrap;
+  justify-content: center;
+  align-items: center;
+
+
+  /*border: 3px solid yellow;*/
+}
+
 .wrapper {
   display: flex;
   flex-flow: row wrap;
@@ -42,16 +58,8 @@ canvas {
   background-color: #181825;
 }
 
-.container {
-  display: flex;
-  width: 100%;
-  height: 100%;
-  flex-flow: column wrap;
-  justify-content: center;
-  align-items: center;
-
-
-  /*border: 3px solid yellow;*/
+.hidden {
+  display: none;
 }
 
 #ui {
@@ -100,18 +108,31 @@ h2 {
   margin-right: 8px;
 }
 
-#user-form {
-  display: none;
-  background-color: #fff;
-  padding: 20px;
-  border-radius: 5px;
+.start-screen {
+  display: flex;
+  gap: 15px;
 }
 
-#user-form input,
-#submitBtn {
-  width: 100%;
+.errorInput {
+  color: #ff0000;                      
+}
+
+.start-screen input {
+  padding: 10px 16px;
+  border: 1px solid #ddd;
+  outline: none;
+  font-size: 18px;
+  border-radius: 6px;
+}
+
+.start-screen button {
   padding: 8px 12px;
-  margin-bottom: 10px;
+  background-color: gray;
+  border: none;
+  border-radius: 6px;
+  color: #4cffd7;
+  font-size: 18px;
+
 }
 
 @media (max-width: 600px) {

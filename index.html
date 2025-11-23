@@ -20,7 +20,11 @@
 <body>
     
     <div class="container noselect">
-        <div class="wrapper">
+        <div class="start-screen">
+            <input type="text" id="username" placeholder="Entrez votre nom">
+            <button id="playBtn">JOUER</button>
+        </div>
+        <div class="wrapper hidden">
             <button id="replay">
                 <i class="fas fa-play"></i>
                 RECOMMENCER
@@ -34,11 +38,6 @@
             </div>
         </div>
     </div>
-
-    <form id="user-form">
-            <input type="text" placeholder="Entrez votre nom">
-            <button type="submit" id="submitBtn">Soumettre</button>
-    </form>
 
     <script src="js/script.js"></script>
 </body>
