@@ -8,6 +8,9 @@ let CTX = dom_canvas.getContext("2d");
 const width = (dom_canvas.width = 400);
 const height = (dom_canvas.height = 400);
 
+let nameOfPlayer = document.getElementById("username");
+let startGameButton = document.getElementById("playBtn");
+
 // CREATION DES VARIABLES DU JEU
 let snake,
 food,
@@ -22,6 +25,16 @@ particles = [],
 splashingParticleCount = 20,
 cellsCount,
 requestID;
+
+// AFFICHER LE CANVAS UNE FOIS L'INPUT REMPLI
+startGameButton.addEventListener("click", () => {
+  if (nameOfPlayer.value.trim() !== '') {
+    document.querySelector(".start-screen").classList.add("hidden");
+    document.querySelector(".wrapper").classList.remove("hidden");
+  } else {
+    alert("Remplissez le champ de saisie");
+  }
+})
 
 // FONCTION UTILITAIRE - définir un vecteur responsable du mouvement ayant x et y pour coordonnées
 let helpers = {
@@ -383,6 +396,8 @@ function loop() {
 
 // FONCTION GAME OVER
 function gameOver() {
+    const usernameValue = username.value;
+    const userScore = score;
     maxScore ? null : (maxScore = score);
     score > maxScore ? (maxScore = score) : null;
     window.localStorage.setItem("maxScore", maxScore);
@@ -393,6 +408,8 @@ function gameOver() {
     CTX.font = "15px Poppins"
     CTX.fillText(`SCORE : ${score}`, width / 2, height / 2 + 60);
     CTX.fillText(`MEILLEUR SCORE : ${maxScore}`, width / 2, height / 2 + 80);
+
+    addHighScore();
 }
 
 // FONCTION POUR LE RELANCEMENT DES PARTIES
@@ -405,6 +422,26 @@ function reset() {
     isGameOver = false;
     clearTimeout(requestID);
     loop();
+}
+
+// FONCTION POUR CLASSER LES SCORES
+function getHighScores() {
+    const highScoresString = localStorage.getItem('highScores');
+    return highScoresString ? JSON.parse(highScoresString) : [];
+}
+
+function saveHighScores(scores) {
+    localStorage.setItem('highScores', JSON.stringify(scores));
+}
+
+function addHighScore(newScore) {
+    const highScores = getHighScores;
+    highScores.push(newScore);
+
+    if (highScores.length > 10) {
+        highScores.pop();
+    }
+    saveHighScores(highScores);
 }
 
 initialize();
