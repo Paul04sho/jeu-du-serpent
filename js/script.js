@@ -409,7 +409,13 @@ function gameOver() {
     CTX.fillText(`SCORE : ${score}`, width / 2, height / 2 + 60);
     CTX.fillText(`MEILLEUR SCORE : ${maxScore}`, width / 2, height / 2 + 80);
 
-    addHighScore();
+    addHighScore({name: nameOfPlayer.value, score: score});
+
+    // affichage du leaderboard après 5 secondes
+    setTimeout(() => {
+        document.querySelector(".wrapper").classList.add("hidden");
+        showLeaderBoard();
+    }, 3000);
 }
 
 // FONCTION POUR LE RELANCEMENT DES PARTIES
@@ -435,13 +441,34 @@ function saveHighScores(scores) {
 }
 
 function addHighScore(newScore) {
-    const highScores = getHighScores;
+    let highScores = getHighScores();
+
     highScores.push(newScore);
 
-    if (highScores.length > 10) {
-        highScores.pop();
-    }
+    highScores.sort((a, b) => b.score - a.score);
+    highScores = highScores.slice(0, 10);
+
     saveHighScores(highScores);
+}
+
+// FONCTION POUR MONTRER LE CLASSEMENT FINAL PAR UTILISATEUR
+function showLeaderBoard() {
+    const board = document.getElementById("leaderboard");
+    board.classList.remove("hidden");
+
+    let highScores = getHighScores();
+
+    board.innerHTML ="<h2>TOP 10 JOUEURS</h2>"
+
+    const playerRankingList = document.createElement("ul");
+    highScores.forEach(player => {
+        const playerRankingListItem = document.createElement("li");
+        playerRankingListItem.textContent = `${index + 1}. ${player.name} — ${player.score}`;
+        playerRankingList.appendChild(playerRankingListItem);
+    });
+
+    board.appendChild(playerRankingList);
+
 }
 
 initialize();

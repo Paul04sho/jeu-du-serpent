@@ -153,6 +153,55 @@ h2 {
   transform: scale(0.98);
 }
 
+#leaderboard {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background: #181825;
+  padding: 30px 40px;
+  border-radius: 20px;
+  box-shadow: 0 0 25px rgba(76, 255, 215, 0.4);
+  color: #4cffd7;
+  text-align: center;
+  min-width: 300px;
+  animation: fadeIn 0.4s ease;
+  z-index: 99;
+}
+
+#leaderboard h2 {
+  transform: rotate(0deg);
+  font-size: 22px;
+  margin-bottom: 20px;
+}
+
+#leaderboard ul {
+  list-style: none;
+  padding: 0;
+}
+
+#leaderboard li {
+  padding: 8px 0;
+  font-size: 16px;
+  color: #eee;
+  border-bottom: 2px solid rgba(255, 255, 255, 0.08);
+}
+
+#leaderboard li:last-child {
+  border-bottom: none;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translate(-50%, -45%);
+  }
+  to {
+    opacity: 1;
+    transform: translate(-50%, -50%);
+  }
+}
+
 @media (max-width: 600px) {
   #replay {
     margin-bottom: 20px;
