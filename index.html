@@ -18,9 +18,14 @@
     <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
+
+    <div class="start-screen">
+        <input type="text" id="username" placeholder="Entrez votre nom">
+        <button id="playBtn" type="submit">JOUER</button>
+    </div>
     
     <div class="container noselect">
-        <div class="wrapper">
+        <div class="wrapper hidden">
             <button id="replay">
                 <i class="fas fa-play"></i>
                 RECOMMENCER
@@ -35,10 +40,14 @@
         </div>
     </div>
 
-    <form id="user-form">
-            <input type="text" placeholder="Entrez votre nom">
-            <button type="submit" id="submitBtn">Soumettre</button>
-    </form>
+    <div id="leaderboard" class="hidden">
+        <!-- Les noms des meilleurs joueurs seront ajouté ici dynamiquement -->
+        <button id="replay">
+            <i class="fas fa-play"></i>
+            RECOMMENCER
+        </button>
+    </div>
+
 
     <script src="js/script.js"></script>
 </body>

@@ -100,18 +100,106 @@ h2 {
   margin-right: 8px;
 }
 
-#user-form {
-  display: none;
-  background-color: #fff;
-  padding: 20px;
-  border-radius: 5px;
+.hidden {
+  display: none !important;
 }
 
-#user-form input,
-#submitBtn {
-  width: 100%;
-  padding: 8px 12px;
-  margin-bottom: 10px;
+.start-screen {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  display: flex;
+  gap: 15px;
+}
+
+.start-screen input {
+  background: #181825;
+  padding: 12px 18px;
+  font-size: 18px;
+  border: 2px solid #4cffd7;
+  border-radius: 8px;
+  outline: none;
+  transition: 0.2s ease-in-out;
+}
+
+.start-screen input::placeholder {
+  color: #6e7888;
+}
+
+.start-screen input:focus {
+  box-shadow: 0 0 10px #4cffd7;
+  border-color: #4cffd7;
+}
+
+.start-screen button {
+  background: #4cffd7;
+  padding: 12px 20px;
+  font-size: 18px;
+  font-weight: 700;
+  color: #222738;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: 0.2s ease-in-out;
+}
+
+.start-screen button:hover {
+  background: #37bfa8;
+  transform: scale(1.05);
+}
+
+.start-screen button:active {
+  transform: scale(0.98);
+}
+
+#leaderboard {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background: #181825;
+  padding: 30px 40px;
+  border-radius: 20px;
+  box-shadow: 0 0 25px rgba(76, 255, 215, 0.4);
+  color: #4cffd7;
+  text-align: center;
+  min-width: 300px;
+  animation: fadeIn 0.4s ease;
+  z-index: 99;
+}
+
+#leaderboard h2 {
+  transform: rotate(0deg);
+  font-size: 22px;
+  margin-bottom: 20px;
+}
+
+#leaderboard ul {
+  list-style: none;
+  padding: 0;
+}
+
+#leaderboard li {
+  padding: 8px 0;
+  font-size: 16px;
+  color: #eee;
+  border-bottom: 2px solid rgba(255, 255, 255, 0.08);
+}
+
+#leaderboard li:last-child {
+  border-bottom: none;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translate(-50%, -45%);
+  }
+  to {
+    opacity: 1;
+    transform: translate(-50%, -50%);
+  }
 }
 
 @media (max-width: 600px) {
@@ -143,5 +231,11 @@ h2 {
 
   .container {
     flex-flow: column wrap;
+  }
+  
+  .start-screen {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
   }
 }
