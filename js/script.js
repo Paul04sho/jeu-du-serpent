@@ -12,13 +12,10 @@ const width = (dom_canvas.width = 400);
 const height = (dom_canvas.height = 400);
 const scoresJSON = localStorage.getItem("highscores");
 
-let scoresList;
 
 let nameOfPlayer = document.getElementById("username");
 let startGameButton = document.getElementById("playBtn");
 
-let nameOfPlayer = document.getElementById("username");
-let startGameButton = document.getElementById("playBtn");
 
 // CREATION DES VARIABLES DU JEU
 let snake,

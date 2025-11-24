@@ -108,33 +108,6 @@ h2 {
   margin-right: 8px;
 }
 
-<<<<<<< HEAD
-.start-screen {
-  display: flex;
-  gap: 15px;
-}
-
-.errorInput {
-  color: #ff0000;                      
-}
-
-.start-screen input {
-  padding: 10px 16px;
-  border: 1px solid #ddd;
-  outline: none;
-  font-size: 18px;
-  border-radius: 6px;
-}
-
-.start-screen button {
-  padding: 8px 12px;
-  background-color: gray;
-  border: none;
-  border-radius: 6px;
-  color: #4cffd7;
-  font-size: 18px;
-
-=======
 .hidden {
   display: none !important;
 }
@@ -235,7 +208,6 @@ h2 {
     opacity: 1;
     transform: translate(-50%, -50%);
   }
->>>>>>> 947434ff57032132c6d52f79d57b9d2b2b7c8f02
 }
 
 @media (max-width: 600px) {
