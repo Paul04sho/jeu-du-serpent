@@ -14,6 +14,12 @@ const scoresJSON = localStorage.getItem("highscores");
 
 let scoresList;
 
+let nameOfPlayer = document.getElementById("username");
+let startGameButton = document.getElementById("playBtn");
+
+let nameOfPlayer = document.getElementById("username");
+let startGameButton = document.getElementById("playBtn");
+
 // CREATION DES VARIABLES DU JEU
 let snake,
 food,
@@ -28,20 +34,6 @@ particles = [],
 splashingParticleCount = 20,
 cellsCount,
 requestID;
-
-// RENDRE LA GRILLE VISIBLE UNE FOIS LE BOUTON JOUER CLIQUE
-overallGrid.classList.add('hidden');
-playButton.addEventListener("click", () => {
-    const inputValue = userName.value;
-    if (inputValue.trim() !== '') {
-        overallGrid.classList.remove('hidden');
-    } else {
-        alert("Remplissez le champ de saisie");
-    }
-});
-
-localStorage.setItem("playerName", userName);
-localStorage.getItem("playerName");
 
 // FONCTION UTILITAIRE - définir un vecteur responsable du mouvement ayant x et y pour coordonnées
 let helpers = {
@@ -403,6 +395,8 @@ function loop() {
 
 // FONCTION GAME OVER
 function gameOver() {
+    const usernameValue = username.value;
+    const userScore = score;
     maxScore ? null : (maxScore = score);
     score > maxScore ? (maxScore = score) : null;
     window.localStorage.setItem("maxScore", maxScore);
@@ -413,6 +407,14 @@ function gameOver() {
     CTX.font = "15px Poppins"
     CTX.fillText(`SCORE : ${score}`, width / 2, height / 2 + 60);
     CTX.fillText(`MEILLEUR SCORE : ${maxScore}`, width / 2, height / 2 + 80);
+
+    addHighScore({name: nameOfPlayer.value, score: score});
+
+    // affichage du leaderboard après 5 secondes
+    setTimeout(() => {
+        document.querySelector(".wrapper").classList.add("hidden");
+        showLeaderBoard();
+    }, 3000);
 }
 
 // FONCTION POUR LE RELANCEMENT DES PARTIES
@@ -425,6 +427,47 @@ function reset() {
     isGameOver = false;
     clearTimeout(requestID);
     loop();
+}
+
+// FONCTION POUR CLASSER LES SCORES
+function getHighScores() {
+    const highScoresString = localStorage.getItem('highScores');
+    return highScoresString ? JSON.parse(highScoresString) : [];
+}
+
+function saveHighScores(scores) {
+    localStorage.setItem('highScores', JSON.stringify(scores));
+}
+
+function addHighScore(newScore) {
+    let highScores = getHighScores();
+
+    highScores.push(newScore);
+
+    highScores.sort((a, b) => b.score - a.score);
+    highScores = highScores.slice(0, 10);
+
+    saveHighScores(highScores);
+}
+
+// FONCTION POUR MONTRER LE CLASSEMENT FINAL PAR UTILISATEUR
+function showLeaderBoard() {
+    const board = document.getElementById("leaderboard");
+    board.classList.remove("hidden");
+
+    let highScores = getHighScores();
+
+    board.innerHTML ="<h2>TOP 10 JOUEURS</h2>"
+
+    const playerRankingList = document.createElement("ul");
+    highScores.forEach(player => {
+        const playerRankingListItem = document.createElement("li");
+        playerRankingListItem.textContent = `${index + 1}. ${player.name} — ${player.score}`;
+        playerRankingList.appendChild(playerRankingListItem);
+    });
+
+    board.appendChild(playerRankingList);
+
 }
 
 initialize();
