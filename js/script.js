@@ -2,20 +2,14 @@
 let dom_replay = document.querySelector("#replay");
 let dom_score = document.querySelector("#score");
 let dom_canvas = document.createElement("canvas");
-let userName = document.querySelector("#username");
-let playButton = document.querySelector("#playBtn");
-let overallGrid = document.querySelector(".wrapper");
 document.querySelector("#canvas").appendChild(dom_canvas);
 let CTX = dom_canvas.getContext("2d");
 
 const width = (dom_canvas.width = 400);
 const height = (dom_canvas.height = 400);
-const scoresJSON = localStorage.getItem("highscores");
-
 
 let nameOfPlayer = document.getElementById("username");
 let startGameButton = document.getElementById("playBtn");
-
 
 // CREATION DES VARIABLES DU JEU
 let snake,
@@ -34,13 +28,13 @@ requestID;
 
 // AFFICHER LE CANVAS UNE FOIS L'INPUT REMPLI
 startGameButton.addEventListener("click", () => {
-    if (nameOfPlayer.value.trim() !== '') {
-      document.querySelector(".start-screen").classList.add("hidden");
-      document.querySelector(".wrapper").classList.remove("hidden");
-    } else {
-      alert("Remplissez le champ de saisie");
-    }
-  });
+  if (nameOfPlayer.value.trim() !== '') {
+    document.querySelector(".start-screen").classList.add("hidden");
+    document.querySelector(".wrapper").classList.remove("hidden");
+  } else {
+    alert("Remplissez le champ de saisie");
+  }
+});
 
 // FONCTION UTILITAIRE - définir un vecteur responsable du mouvement ayant x et y pour coordonnées
 let helpers = {
@@ -410,7 +404,7 @@ function gameOver() {
     CTX.fillStyle = "#4cffd7";
     CTX.textAlign = "center";
     CTX.font = "bold 30px Poppins";
-    CTX.fillText("VOUS AVEZ PERDU !",  width / 2, height / 2); // afficher ce message si le joueur perd
+    CTX.fillText("VOUS AVEZ PERDU !", width / 2, height / 2); // afficher ce message si le joueur perd
     CTX.font = "15px Poppins"
     CTX.fillText(`SCORE : ${score}`, width / 2, height / 2 + 60);
     CTX.fillText(`MEILLEUR SCORE : ${maxScore}`, width / 2, height / 2 + 80);

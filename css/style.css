@@ -1,3 +1,4 @@
+
 @font-face {
   font-family: "game";
   src: url("https://fonts.googleapis.com/css2?family=Poppins:wght@500;800&display=swap");
@@ -28,22 +29,6 @@ body {
   color: #6e7888;
 }
 
-.noselect {
-  user-select: none;
-}
-
-.container {
-  display: flex;
-  width: 100%;
-  height: 100%;
-  flex-flow: column wrap;
-  justify-content: center;
-  align-items: center;
-
-
-  /*border: 3px solid yellow;*/
-}
-
 .wrapper {
   display: flex;
   flex-flow: row wrap;
@@ -58,8 +43,16 @@ canvas {
   background-color: #181825;
 }
 
-.hidden {
-  display: none;
+.container {
+  display: flex;
+  width: 100%;
+  height: 100%;
+  flex-flow: column wrap;
+  justify-content: center;
+  align-items: center;
+
+
+  /*border: 3px solid yellow;*/
 }
 
 #ui {
