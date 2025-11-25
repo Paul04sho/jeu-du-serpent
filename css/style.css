@@ -191,6 +191,25 @@ h2 {
   border-bottom: none;
 }
 
+#lb-replay {
+  margin-top: 20px;
+  padding: 10px 20px;
+  font-size: 16px;
+  font-weight: 600;
+  background: #6e7888;
+  color: #222738;
+  border: none;
+  border-radius: 40px;
+  cursor: pointer;
+  transition: all 200ms ease-in-out;
+}
+
+#lb-replay:hover {
+  background: #a6aab5;
+  background: #4cffd7;
+  transition: all 200ms ease-in-out;
+}
+
 @keyframes fadeIn {
   from {
     opacity: 0;

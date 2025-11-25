@@ -454,11 +454,13 @@ function addHighScore(newScore) {
 // FONCTION POUR MONTRER LE CLASSEMENT FINAL PAR UTILISATEUR
 function showLeaderBoard() {
     const board = document.getElementById("leaderboard");
+    const replayButton = document.getElementById("lb-replay");
     board.classList.remove("hidden");
 
     let highScores = getHighScores();
 
-    board.innerHTML ="<h2>TOP 10 JOUEURS</h2>"
+    board.innerHTML ="<h2>TOP 10 JOUEURS</h2>";
+
 
     const playerRankingList = document.createElement("ul");
     highScores.forEach(player => {
@@ -468,6 +470,13 @@ function showLeaderBoard() {
     });
 
     board.appendChild(playerRankingList);
+    board.appendChild(replayButton);
+
+    replayButton.addEventListener("click", () => {
+        reset();
+        board.classList.add("hidden");
+        document.querySelector(".wrapper").classList.remove("hidden");
+    })
 
 }
 
