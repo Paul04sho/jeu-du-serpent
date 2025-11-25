@@ -34,7 +34,7 @@ startGameButton.addEventListener("click", () => {
   } else {
     alert("Remplissez le champ de saisie");
   }
-})
+});
 
 // FONCTION UTILITAIRE - définir un vecteur responsable du mouvement ayant x et y pour coordonnées
 let helpers = {
