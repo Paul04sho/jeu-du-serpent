@@ -23,6 +23,33 @@ Ce projet de développement web consiste à reproduire le jeu du serpent classiq
 - **Sauvegarde du meilleur score:** Tenir un registre du score le plus élevé obtenu
 
 
+## 🤌 Améliorations possibles
+
+- **Contrôle:**
+
+    ○ Touches à optimiser pour la version mobile
+
+- **Options de difficultés:**
+
+    ○ Augmenter la vitesse de jeu à chaque fois que le serpent grandit
+    
+    ○ Varier la taille de la grille
+
+  ## ⛏️ Tech Stack
+
+▪ **HTML:** pour la structure de la page, celle-ci contenant l'élément *<canvas>* et le score en temps réel.
+
+▪ **CSS:** afin d'appliquer des styles aux éléments du jeu.
+
+▪ **JAVASCRIPT**: regroupe toute la logique à savoir l'API Canvas, la boucle de jeu, la gestion des touches du clavier (↑, ↓, ←, →), la détection de collision et le relancement de nouvelles parties.
+
+
+
+## 📖 Ressources utilisées
+
+- **CodingStella**: avec un article de blog m'ayant servi de base pour coder le jeu (https://codingstella.com/how-to-make-glowing-snake-game-using-html-css-javascript/)
+  
+
 ## 🚀 Installation locale
 
 Si tu veux cloner le projet pour contribuer, suis ces étapes :
@@ -37,32 +64,6 @@ git clone https://github.com/Paul04sho/jeu-du-serpent.git
 cd jeu-du-serpent
 ```
 
-
-## 🤌 Améliorations possibles
-
-- **Contrôle:**
-
-    ○ Touches à optimiser pour la version mobile
-
-- **Options de difficultés:**
-
-    ○ Augmenter la vitesse de jeu à chaque fois que le serpent grandit
-    
-    ○ Varier la taille de la grille
-
-## ⛏️ Tech Stack
-
-▪ **HTML:** pour la structure de la page, celle-ci contenant l'élément *<canvas>* et le score en temps réel.
-
-▪ **CSS:** afin d'appliquer des styles aux éléments du jeu.
-
-▪ **JAVASCRIPT**: regroupe toute la logique à savoir l'API Canvas, la boucle de jeu, la gestion des touches du clavier (↑, ↓, ←, →), la détection de collision et le relancement de nouvelles parties.
-
-
-
-## 📖 Ressources utilisées
-
-- **CodingStella**: avec un article de blog m'ayant servi de base pour coder le jeu (https://codingstella.com/how-to-make-glowing-snake-game-using-html-css-javascript/)
 
 ## 🤝 Contribution
 
