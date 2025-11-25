@@ -421,7 +421,7 @@ function gameOver() {
 // FONCTION POUR LE RELANCEMENT DES PARTIES
 function reset() {
     dom_score.innerText = "00";
-    score = "00";
+    score = 0;
     snake = new Snake();
     food.spawn();
     KEY.resetState();
@@ -456,12 +456,12 @@ function showLeaderBoard() {
     const board = document.getElementById("leaderboard");
     board.classList.remove("hidden");
 
-    let highScores = getHighScores();
+    const highScores = getHighScores();
 
     board.innerHTML ="<h2>TOP 10 JOUEURS</h2>"
 
     const playerRankingList = document.createElement("ul");
-    highScores.forEach(player => {
+    highScores.forEach((player, index) => {
         const playerRankingListItem = document.createElement("li");
         playerRankingListItem.textContent = `${index + 1}. ${player.name} — ${player.score}`;
         playerRankingList.appendChild(playerRankingListItem);
