@@ -232,7 +232,7 @@ h2 {
   .container {
     flex-flow: column wrap;
   }
-
+  
   .start-screen {
     display: flex;
     flex-direction: column;
