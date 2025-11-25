@@ -11,38 +11,38 @@ const height = (dom_canvas.height = 400);
 let nameOfPlayer = document.getElementById("username");
 let startGameButton = document.getElementById("playBtn");
 
-// CREATION DES VARIABLES DU JEU
+// VARIABLES DU JEU
 let snake,
-food,
-currentHue,
-cells = 20,
-cellSize,
-isGameOver = false,
-tails = [],
-score = 0,
-maxScore = window.localStorage.getItem("maxScore" || undefined),
-particles = [],
-splashingParticleCount = 20,
-cellsCount,
-requestID;
+    food,
+    currentHue,
+    cells = 20,
+    cellSize,
+    isGameOver = false,
+    score = 0,
+    maxScore = window.localStorage.getItem("maxScore" || undefined),
+    particles = [],
+    splashingParticleCount = 20,
+    cellsCount,
+    requestID;
 
-// AFFICHER LE CANVAS UNE FOIS L'INPUT REMPLI
+// AFFICHER LE CANVAS
 startGameButton.addEventListener("click", () => {
-  if (nameOfPlayer.value.trim() !== '') {
-    document.querySelector(".start-screen").classList.add("hidden");
-    document.querySelector(".wrapper").classList.remove("hidden");
-  } else {
-    alert("Remplissez le champ de saisie");
-  }
+    if (nameOfPlayer.value.trim() !== "") {
+        document.querySelector(".start-screen").classList.add("hidden");
+        document.querySelector(".wrapper").classList.remove("hidden");
+    } else {
+        alert("Remplissez le champ de saisie");
+    }
 });
 
-// FONCTION UTILITAIRE - définir un vecteur responsable du mouvement ayant x et y pour coordonnées
+// HELPERS
 let helpers = {
     Vec: class {
         constructor(x, y) {
             this.x = x;
             this.y = y;
-        } add(v) {
+        }
+        add(v) {
             this.x += v.x;
             this.y += v.y;
             return this;
@@ -58,11 +58,12 @@ let helpers = {
                 return this;
             }
         }
-
     },
-    isCollision (v1, v2) {
+
+    isCollision(v1, v2) {
         return v1.x == v2.x && v1.y == v2.y;
     },
+
     garbageCollector() {
         for (let i = 0; i < particles.length; i++) {
             if (particles[i].size <= 0) {
@@ -70,7 +71,7 @@ let helpers = {
             }
         }
     },
-    // style des lignes de la grille (longueur, couleur, ...)
+
     drawGrid() {
         CTX.lineWidth = 1.1;
         CTX.strokeStyle = "#232332";
@@ -88,80 +89,26 @@ let helpers = {
             CTX.closePath();
         }
     },
+
     randHue() {
-        return  ~~(Math.random() * 360);
-    },
-    hsl2rgb(hue, saturation, lightness) {
-        if (hue == undefined) {
-            return [0, 0, 0];
-        }
-        var chroma = (1 - Math.abs(2 * lightness - 1)) * saturation;
-        var huePrime = hue / 60;
-        var secondComponent = chroma * (1 - Math.abs((huePrime % 2) - 1));
-
-        huePrime = ~~huePrime;
-        var red;
-        var green;
-        var blue;
-
-        if (huePrime === 0) {
-            red = chroma;
-            green = secondComponent;
-            blue = 0;
-        } else if (huePrime === 1) {
-            red = secondComponent;
-            green = chroma;
-            blue = 0;
-        }
-        else if (huePrime === 2) {
-            red = 0;
-            green = chroma;
-            blue = secondComponent;
-        }
-        else if (huePrime === 3) {
-            red = 0;
-            green = secondComponent;
-            blue = chroma;
-        }
-        else if (huePrime === 4) {
-            red = secondComponent;
-            green = 0;
-            blue = chroma;
-        }
-        else if (huePrime === 5) {
-            red = chroma;
-            green = 0;
-            blue = secondComponent;
-        }
-        var lightnessAdjustement = lightness - chroma / 2;
-        red += lightnessAdjustement;
-        green += lightnessAdjustement;
-        blue += lightnessAdjustement;
-
-        return [
-            Math.round(red * 255),
-            Math.round(green * 255),
-            Math.round(blue * 255)
-        ];
-    },
-    // Linear Interpolation (LERP) - anime les mouvements du serpent en les rendant fluides
-    lerp(start, end, t) {
-        return start * (1 - t) + end * t;
+        return ~~(Math.random() * 360);
     }
-}
+};
 
-// CREATION DE LA MECANIQUE DE JEU A L'AIDE DES TOUCHES DU CLAVIER
+// CONTROLES
 let KEY = {
     ArrowUp: false,
     ArrowRight: false,
     ArrowDown: false,
     ArrowLeft: false,
+
     resetState() {
         this.ArrowUp = false;
         this.ArrowRight = false;
         this.ArrowDown = false;
         this.ArrowLeft = false;
     },
+
     listen() {
         addEventListener(
             "keydown",
@@ -171,90 +118,73 @@ let KEY = {
                 if (e.key === "ArrowLeft" && this.ArrowRight) return;
                 if (e.key === "ArrowRight" && this.ArrowLeft) return;
                 this[e.key] = true;
+
                 Object.keys(this)
-                .filter((f) => f !== e.key && f !== "listen" && f !== "resetState")
-                .forEach((k) => {
-                    this[k] = false;
-                });
+                    .filter((k) => k !== e.key && k !== "listen" && k !== "resetState")
+                    .forEach((k) => (this[k] = false));
             },
             false
         );
     }
 };
 
-// DESSINER LE SERPENT ET LUI APPLIQUER DES PROPRIETES
+// SNAKE
 class Snake {
-    constructor(i, type) {
+    constructor() {
         this.pos = new helpers.Vec(width / 2, height / 2);
         this.dir = new helpers.Vec(0, 0);
-        this.type = type;
-        this.index = i;
         this.delay = 5;
         this.size = width / cells;
         this.color = "white";
         this.history = [];
         this.total = 1;
     }
+
     draw() {
         let { x, y } = this.pos;
         CTX.fillStyle = this.color;
         CTX.shadowBlur = 20;
-        CTX.shadowColor = "rgba(255, 255, 255, 0.3)";
+        CTX.shadowColor = "rgba(255,255,255,0.3)";
         CTX.fillRect(x, y, this.size, this.size);
         CTX.shadowBlur = 0;
+
         if (this.total >= 2) {
             for (let i = 0; i < this.history.length - 1; i++) {
                 let { x, y } = this.history[i];
-                CTX.lineWidth = 1;
-                CTX.fillStyle = "rgba(255, 255, 255, 1)";
                 CTX.fillRect(x, y, this.size, this.size);
             }
         }
     }
-    // pour permettre au serpent de traverser les murs
+
     walls() {
         let { x, y } = this.pos;
-        if (x + cellSize > width) {
-            this.pos.x = 0;
-        } // téléporte le serpent de droite à gauche
-        if (y + cellSize > width) {
-            this.pos.y = 0;
-        } // téléporte le serpent de gauche à droite
-        if (y < 0) {
-            this.pos.y = height - cellSize;
-        } // téléporte le serpent de haut en bas
-        if (x < 0) {
-            this.pos.x = width - cellSize;
-        } // téléporte le serpent de bas en haut
+        if (x + cellSize > width) this.pos.x = 0;
+        if (y + cellSize > height) this.pos.y = 0;
+        if (y < 0) this.pos.y = height - cellSize;
+        if (x < 0) this.pos.x = width - cellSize;
     }
+
     controlls() {
         let dir = this.size;
-        if (KEY.ArrowUp) {
-            this.dir = new helpers.Vec(0, -dir);
-        }
-        if (KEY.ArrowDown) {
-            this.dir = new helpers.Vec(0, dir);
-        }
-        if (KEY.ArrowLeft) {
-            this.dir = new helpers.Vec(-dir, 0);
-        }
-        if (KEY.ArrowRight) {
-            this.dir = new helpers.Vec(dir, 0);
-        }
+        if (KEY.ArrowUp) this.dir = new helpers.Vec(0, -dir);
+        if (KEY.ArrowDown) this.dir = new helpers.Vec(0, dir);
+        if (KEY.ArrowLeft) this.dir = new helpers.Vec(-dir, 0);
+        if (KEY.ArrowRight) this.dir = new helpers.Vec(dir, 0);
     }
+
     selfCollision() {
         for (let i = 0; i < this.history.length; i++) {
-            let p = this.history[i];
-            // L'utilisateur perd le jeu dans le cas ou le serpent se cogne lui-meme
-            if (helpers.isCollision(this.pos, p)) {
+            if (helpers.isCollision(this.pos, this.history[i])) {
                 isGameOver = true;
             }
         }
     }
+
     update() {
         this.walls();
         this.draw();
         this.controlls();
+
         if (!this.delay--) {
             if (helpers.isCollision(this.pos, food.pos)) {
                 incrementScore();
@@ -262,94 +192,84 @@ class Snake {
                 food.spawn();
                 this.total++;
             }
+
             this.history[this.total - 1] = new helpers.Vec(this.pos.x, this.pos.y);
+
             for (let i = 0; i < this.total - 1; i++) {
                 this.history[i] = this.history[i + 1];
             }
+
             this.pos.add(this.dir);
             this.delay = 5;
-            this.total > 3 ? this.selfCollision() : null;
+
+            if (this.total > 3) this.selfCollision();
         }
     }
 }
 
-// DESSINER LA NOURRITURE 
+// FOOD
 class Food {
     constructor() {
-        this.pos = new helpers.Vec(
-            ~~(Math.random() * cells) * cellSize,
-            ~~(Math.random() * cells) * cellSize
-        );
-        this.color = currentHue = `hsl(${~~(Math.random() * 360)},100%,50%)`;
         this.size = cellSize;
+        this.spawn();
     }
-    draw() {
-        let { x, y } = this.pos;
-        CTX.globalCompositeOperation = "lighter";
-        CTX.shadowBlur = 20;
-        CTX.shadowColor = this.color;
-        CTX.fillStyle = this.color;
-        CTX.fillRect(x, y, this.size, this.size);
-        CTX.globalCompositeOperation = "source-over";
-        CTX.shadowBlur = 0;
-    }
-    // point d'apparition de la nourriture déterminé aléatoirement
+
     spawn() {
         let randX = ~~(Math.random() * cells) * this.size;
-        let randY =  ~~(Math.random() * cells) * this.size;
+        let randY = ~~(Math.random() * cells) * this.size;
+
         for (let path of snake.history) {
             if (helpers.isCollision(new helpers.Vec(randX, randY), path)) {
                 return this.spawn();
             }
-        } // boucle Pour utilisé pour s'assurer que la position de
-          // la nourriture est différente de celle du corps du serpent
-        this.color = currentHue = `hsl(${helpers.randHue()}, 100%, 50%)`; 
+        }
+
+        this.color = currentHue = `hsl(${helpers.randHue()},100%,50%)`;
         this.pos = new helpers.Vec(randX, randY);
+    }
+
+    draw() {
+        CTX.globalCompositeOperation = "lighter";
+        CTX.shadowBlur = 20;
+        CTX.shadowColor = this.color;
+        CTX.fillStyle = this.color;
+        CTX.fillRect(this.pos.x, this.pos.y, this.size, this.size);
+        CTX.globalCompositeOperation = "source-over";
+        CTX.shadowBlur = 0;
     }
 }
 
-// DESSINER LES SEGMENTS DU CORPS DU SERPENT ET CELUI DE LA NOURRITURE
+// PARTICLES (FIXÉ)
 class Particle {
     constructor(pos, color, size, vel) {
         this.pos = pos;
         this.color = color;
         this.size = Math.abs(size / 2);
+        this.vel = vel;
         this.ttl = 0;
         this.gravity = -0.2;
-        this.vel = vel;
     }
-    draw() {
-        let { x, y } = this.pos;
-        let hsl = this.color
-        .split("")
-        .fiter((l) => l.match(/[^hsl()$% ]/g))
-        .join("")
-        .split("")
-        .map((n) => +n);
-        let [r, g, b] = helpers.hsl2rgb(hsl[0], hsl[1] / 100, hsl[2] / 100);
-        CTX.shadowColor = `rgb(${r},${g},${b},${1})`;
-        CTX.shadowBlur = 0;
-        CTX.globalCompositeOperation = "lighter";
-        CTX.fillRect(x, y, this.size, this.size);
-        CTX.globalCompositeOperation = "source-over";
 
+    draw() {
+        CTX.fillStyle = this.color;
+        CTX.fillRect(this.pos.x, this.pos.y, this.size, this.size);
     }
+
     update() {
         this.draw();
         this.size -= 0.3;
-        this.ttl += 1;
         this.pos.add(this.vel);
         this.vel.y -= this.gravity;
     }
 }
 
-// FONCTION POUR INCREMENTER LE SCORE - ajouter +1 lorsque le serpent réussit à avaler la nourriture
+// SCORE
 function incrementScore() {
     score++;
     dom_score.innerText = score.toString().padStart(2, "0");
 }
 
-// FONCTION LIE AUX ANIMATIONS VISUELLES - effet confetti ou petites explosions
+// SPLASH
 function particleSplash() {
     for (let i = 0; i < splashingParticleCount; i++) {
         let vel = new helpers.Vec(Math.random() * 6 - 3, Math.random() * 6 - 3);
@@ -359,12 +279,12 @@ function particleSplash() {
     }
 }
 
-// FONCTION POUR EFFACER LE CONTENU DE LA GRILLE DE JEU
+// CLEAR
 function clear() {
     CTX.clearRect(0, 0, width, height);
 }
 
-// FONCTION QUI GERE L'AFFICHAGE DE NOUVELLES PARTIES
+// INIT
 function initialize() {
     CTX.imageSmoothingEnabled = false;
     KEY.listen();
@@ -376,17 +296,16 @@ function initialize() {
     loop();
 }
 
-// FONCTION PRINCIPALE 
+// LOOP
 function loop() {
-    clear(); // appel de la fonction clear()
+    clear();
+
     if (!isGameOver) {
-        requestID = setTimeout(loop, 1000 / 60) // vitesse du jeu
-        helpers.drawGrid(); // dessiner la grille
-        snake.update(); // mettre à jour la position du serpent
-        food.draw(); // dessiner la nourriture
-        for (let p of particles) {
-            p.update();
-        }
+        requestID = setTimeout(loop, 1000 / 60);
+        helpers.drawGrid();
+        snake.update();
+        food.draw();
+        particles.forEach((p) => p.update());
         helpers.garbageCollector();
     } else {
         clear();
@@ -394,31 +313,30 @@ function loop() {
     }
 }
 
-// FONCTION GAME OVER
+// GAME OVER
 function gameOver() {
-    const usernameValue = username.value;
-    const userScore = score;
-    maxScore ? null : (maxScore = score);
-    score > maxScore ? (maxScore = score) : null;
-    window.localStorage.setItem("maxScore", maxScore);
     CTX.fillStyle = "#4cffd7";
     CTX.textAlign = "center";
     CTX.font = "bold 30px Poppins";
-    CTX.fillText("VOUS AVEZ PERDU !", width / 2, height / 2); // afficher ce message si le joueur perd
-    CTX.font = "15px Poppins"
+    CTX.fillText("VOUS AVEZ PERDU !", width / 2, height / 2);
+    CTX.font = "15px Poppins";
     CTX.fillText(`SCORE : ${score}`, width / 2, height / 2 + 60);
+
+    maxScore ? null : (maxScore = score);
+    if (score > maxScore) maxScore = score;
+    window.localStorage.setItem("maxScore", maxScore);
+
     CTX.fillText(`MEILLEUR SCORE : ${maxScore}`, width / 2, height / 2 + 80);
 
-    addHighScore({name: nameOfPlayer.value, score: score});
+    addHighScore({ name: nameOfPlayer.value, score });
 
-    // affichage du leaderboard après 5 secondes
     setTimeout(() => {
         document.querySelector(".wrapper").classList.add("hidden");
         showLeaderBoard();
     }, 3000);
 }
 
-// FONCTION POUR LE RELANCEMENT DES PARTIES
+// RESET
 function reset() {
     dom_score.innerText = "00";
     score = 0;
@@ -430,19 +348,18 @@ function reset() {
     loop();
 }
 
-// FONCTION POUR CLASSER LES SCORES
+// HIGH SCORES
 function getHighScores() {
-    const highScoresString = localStorage.getItem('highScores');
+    const highScoresString = localStorage.getItem("highScores");
     return highScoresString ? JSON.parse(highScoresString) : [];
 }
 
 function saveHighScores(scores) {
-    localStorage.setItem('highScores', JSON.stringify(scores));
+    localStorage.setItem("highScores", JSON.stringify(scores));
 }
 
 function addHighScore(newScore) {
     let highScores = getHighScores();
-
     highScores.push(newScore);
 
     highScores.sort((a, b) => b.score - a.score);
@@ -451,24 +368,23 @@ function addHighScore(newScore) {
     saveHighScores(highScores);
 }
 
-// FONCTION POUR MONTRER LE CLASSEMENT FINAL PAR UTILISATEUR
+// LEADERBOARD
 function showLeaderBoard() {
     const board = document.getElementById("leaderboard");
     board.classList.remove("hidden");
 
-    const highScores = getHighScores();
-
-    board.innerHTML ="<h2>TOP 10 JOUEURS</h2>"
+    let highScores = getHighScores();
+    board.innerHTML = "<h2>TOP 10 JOUEURS</h2>";
 
     const playerRankingList = document.createElement("ul");
+
     highScores.forEach((player, index) => {
-        const playerRankingListItem = document.createElement("li");
-        playerRankingListItem.textContent = `${index + 1}. ${player.name} — ${player.score}`;
-        playerRankingList.appendChild(playerRankingListItem);
+        const li = document.createElement("li");
+        li.textContent = `${index + 1}. ${player.name} — ${player.score}`;
+        playerRankingList.appendChild(li);
     });
 
     board.appendChild(playerRankingList);
-
 }
 
 initialize();
