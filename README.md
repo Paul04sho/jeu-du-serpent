@@ -35,7 +35,7 @@ Ce projet de développement web consiste à reproduire le jeu du serpent classiq
     
     ○ Varier la taille de la grille
 
-  ## ⛏️ Tech Stack
+## ⛏️ Tech Stack
 
 ▪ **HTML:** pour la structure de la page, celle-ci contenant l'élément *<canvas>* et le score en temps réel.
 
