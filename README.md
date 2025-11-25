@@ -33,7 +33,9 @@ git clone https://github.com/Paul04sho/jeu-du-serpent.git
 ```
 
 ### 2. Accéder au dossier
+```
 cd jeu-du-serpent
+```
 
 
 ## 🤌 Améliorations possibles
