@@ -69,15 +69,11 @@ cd jeu-du-serpent
 Toute contribution à ce projet est la bienvenue ! 
 Voici les étapes à suivre: 
 
-    1. Fork le repo
-
-    2. Créez une nouvelle branche (git checkout -b feature/nom-de-ta-feature)
-
-    3. Commit tes modifications
-
-    4. Push la branche (git push origin feature/nom-de-ta-feature)
-
-    5. Ouvre une Pull Request depuis Github
+1. Fork le repo
+2. Créez une nouvelle branche (git checkout -b feature/nom-de-ta-feature)
+3. Commit tes modifications
+4. Push la branche (git push origin feature/nom-de-ta-feature)
+5. Ouvre une Pull Request depuis Github
 
 
 ## 📜 License
