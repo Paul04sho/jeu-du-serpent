@@ -32,6 +32,16 @@ splashingParticleCount = 20,
 cellsCount,
 requestID;
 
+// AFFICHER LE CANVAS UNE FOIS L'INPUT REMPLI
+startGameButton.addEventListener("click", () => {
+    if (nameOfPlayer.value.trim() !== '') {
+      document.querySelector(".start-screen").classList.add("hidden");
+      document.querySelector(".wrapper").classList.remove("hidden");
+    } else {
+      alert("Remplissez le champ de saisie");
+    }
+  });
+
 // FONCTION UTILITAIRE - définir un vecteur responsable du mouvement ayant x et y pour coordonnées
 let helpers = {
     Vec: class {
