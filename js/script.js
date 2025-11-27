@@ -366,25 +366,35 @@ function addHighScore(newScore) {
     highScores = highScores.slice(0, 10);
 
     saveHighScores(highScores);
+
+    console.log(highScores);
 }
 
 // LEADERBOARD
 function showLeaderBoard() {
     const board = document.getElementById("leaderboard");
+    const replayButton = document.getElementById("lb-replay");
     board.classList.remove("hidden");
 
     let highScores = getHighScores();
-    board.innerHTML = "<h2>TOP 10 JOUEURS</h2>";
+
 
     const playerRankingList = document.createElement("ul");
-
     highScores.forEach((player, index) => {
-        const li = document.createElement("li");
-        li.textContent = `${index + 1}. ${player.name} — ${player.score}`;
-        playerRankingList.appendChild(li);
+        const playerRankingListItem = document.createElement("li");
+        playerRankingListItem.textContent = `${index + 1}. ${player.name} — ${player.score}`;
+        playerRankingList.appendChild(playerRankingListItem);
     });
 
     board.appendChild(playerRankingList);
+    board.appendChild(replayButton);
+
+    replayButton.addEventListener("click", () => {
+        reset();
+        board.classList.add("hidden");
+        document.querySelector(".wrapper").classList.remove("hidden");
+    });
+
 }
 
 initialize();
