@@ -77,7 +77,7 @@ Voici les étapes à suivre:
 5. Ouvre une Pull Request depuis Github
 
 
-## 📜 License
+## 📜 Licence
 
 Distribué sous licence MIT. Plus d'informations ici : https://choosealicense.com/licenses/mit/
 
